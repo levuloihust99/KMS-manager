@@ -51,3 +51,11 @@ div.row-main-content > * {
   font-size: 12px!important;
   padding: 8px!important;
 }
+
+.pagination {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
