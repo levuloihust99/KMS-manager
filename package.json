@@ -1,0 +1,31 @@
+{
+  "name": "manager",
+  "private": true,
+  "scripts": {
+    "start": "meteor run",
+    "test": "meteor test --once --driver-package meteortesting:mocha",
+    "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
+    "visualize": "meteor --production --extra-packages bundle-visualizer",
+    "postinstall": "./postinstall.sh"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.20.7",
+    "meteor-node-stubs": "^1.2.5",
+    "prop-types": "^15.7.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-table-v6": "^6.8.6",
+    "semantic-ui-css": "^2.5.0",
+    "semantic-ui-react": "^2.1.4",
+    "simpl-schema": "^3.4.1",
+    "uuid": "^9.0.0",
+    "winston": "^3.8.2"
+  },
+  "meteor": {
+    "mainModule": {
+      "client": "client/main.jsx",
+      "server": "server/main.js"
+    },
+    "testModule": "tests/main.js"
+  }
+}

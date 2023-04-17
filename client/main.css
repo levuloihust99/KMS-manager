@@ -1,0 +1,53 @@
+body {
+  padding: 10px;
+  font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+}
+
+#react-target {
+  margin: 10px;
+}
+
+.row-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+div.row-main-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex: 1;
+  margin-right: 20px;
+}
+
+div.row-main-content > textarea {
+  border: 0px;
+  resize: none;
+}
+
+div.row-main-content > * {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 10px 5px;
+}
+
+.no-focus:focus {
+  outline: none
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.fix-width-button {
+  width: 60px!important;
+  font-size: 12px!important;
+  padding: 8px!important;
+}
