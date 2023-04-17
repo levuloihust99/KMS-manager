@@ -96,8 +96,8 @@ export const App = () => {
       {isLoading ? 
         renderLoadingPage() :
         <>
-          {renderRecords()}
           {renderPagination()}
+          {renderRecords()}
         </>
       }
     </>
