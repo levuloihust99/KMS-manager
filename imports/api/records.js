@@ -52,6 +52,13 @@ Meteor.publish('paginatedRecords', async function (offset, limit) {
     })
 })
 
+Meteor.publish('recordCount', async function () {
+    const files = await fs.readdir(dataPath)
+    this.added('count', 'number-of-record', { count: files.length })
+    this.ready()
+    this.onStop(() => {})
+})
+
 Meteor.methods({
     async 'updateRecord' (recordId, record) {
         const fileToUpdate = path.join(dataPath, `${recordId}.json`)
