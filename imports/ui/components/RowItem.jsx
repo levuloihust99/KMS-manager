@@ -86,6 +86,11 @@ export const RowItem = (props) => {
     }
   }
 
+  React.useEffect(() => {
+    setQuestion(props.question)
+    setContext(props.context)
+  }, [props.question, props.context])
+
   return (
     <div className="row-item">
       <div className="row-main-content" style={{backgroundColor: rowBgColor}}>
