@@ -1,5 +1,14 @@
 import { Meteor } from 'meteor/meteor';
-import '/imports/api/records'
+
+import '/imports/api/qa/qa_records.method.js'
+import '/imports/api/qa/qa_records.publication.js'
+import '/imports/api/corpus/corpus_records.method.js'
+import '/imports/api/corpus/corpus_records.publication.js'
+import '/imports/api/pages.publication.js'
+
+Meteor.startup(async () => {
+
+})
 
 // import { LinksCollection } from '/imports/api/links';
 

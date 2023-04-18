@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor'
 import { Button } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 
-export const RowItem = (props) => {
+export const QAItem = (props) => {
   const [question, setQuestion] = React.useState(props.question)
   const [context, setContext] = React.useState(props.context)
   const [previousQuestion, setPreviousQuestion] = React.useState(props.question)
@@ -37,9 +37,9 @@ export const RowItem = (props) => {
     setPreviousContext(context)
     Meteor.call('updateRecord', props.articleId, { question, context }, (err, response) => {
       if (err) {
-        console.log("Failed to update the record!")
+        console.log("Failed to update the qa record!")
       } else {
-        console.log(`Updated record ${props.articleId}`)
+        console.log(`Updated qa record ${props.articleId}`)
       }
     })
   }

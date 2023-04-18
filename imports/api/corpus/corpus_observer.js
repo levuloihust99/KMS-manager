@@ -1,21 +1,23 @@
 import { EventEmitter } from 'events'
 
-export const emitter = new EventEmitter()
+export const corpusEmitter = new EventEmitter()
+export const corpusCounter = { subscription: 0 }
+
 const observerPool = {}
 
-emitter.on('update', function (record) {
+corpusEmitter.on('update', function (record) {
     Object.entries(observerPool).forEach(([subscriptionId, observer]) => {
         observer.emit('update', record)
     })
 })
 
-emitter.on('remove', function (recordId) {
+corpusEmitter.on('remove', function (recordId) {
     Object.entries(observerPool).forEach(([subscriptionId, observer]) => {
         observer.emit('remove', recordId)
     })
 })
 
-emitter.on('add', function (record) {
+corpusEmitter.on('add', function (record) {
     Object.entries(observerPool).forEach(([subscriptionId, observer]) => {
         observer.emit('add', record)
     })

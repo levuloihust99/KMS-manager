@@ -50,6 +50,7 @@ mongo-dev-server@1.1.0
 mongo-id@1.0.8
 npm-mongo@4.14.0
 ordered-dict@1.1.0
+pauldowman:dotenv@1.0.1
 promise@0.12.2
 random@1.2.1
 react-fast-refresh@0.2.6
