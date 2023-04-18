@@ -5,6 +5,7 @@ import { Modal, Loader, Button } from "semantic-ui-react"
 
 import { CorpusItem } from './components/CorpusItem.jsx';
 import { CorpusRecordCount, CorpusRecords } from '../db/models.js';
+import { GitOps } from './GitOps.jsx';
 
 const PAGE_SIZE = 5
 
@@ -92,12 +93,21 @@ export const CorpusApp = () => {
     )
   }
 
+  const renderPageHeader = () => {
+    return (
+      <div className="page-header">
+        <GitOps type="corpus"/>
+        {renderPagination()}
+      </div>
+    )
+  }
+
   return (
     <>
       {isLoading ? 
         renderLoadingPage() :
         <>
-          {renderPagination()}
+          {renderPageHeader()}
           {renderRecords()}
         </>
       }

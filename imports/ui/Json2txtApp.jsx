@@ -5,6 +5,7 @@ import { Modal, Loader, Button } from "semantic-ui-react"
 
 import { Json2txtItem } from './components/Json2txtItem.jsx';
 import { Json2txtRecordCount, Json2txtRecords } from '../db/models.js';
+import { GitOps } from './GitOps.jsx';
 
 const PAGE_SIZE = 5
 
@@ -91,12 +92,21 @@ export const Json2txtApp = () => {
     )
   }
 
+  const renderPageHeader = () => {
+    return (
+      <div className="page-header">
+        <GitOps type="json2txt"/>
+        {renderPagination()}
+      </div>
+    )
+  }
+
   return (
     <>
       {isLoading ? 
         renderLoadingPage() :
         <>
-          {renderPagination()}
+          {renderPageHeader()}
           {renderRecords()}
         </>
       }

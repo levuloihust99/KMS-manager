@@ -5,6 +5,7 @@ import { Modal, Loader, Button } from "semantic-ui-react"
 
 import { QAItem } from './components/QAItem.jsx';
 import { QARecordCount, QARecords } from '../db/models.js';
+import { GitOps } from './GitOps.jsx';
 
 const PAGE_SIZE = 5
 
@@ -91,12 +92,21 @@ export const QAApp = () => {
     )
   }
 
+  const renderPageHeader = () => {
+    return (
+      <div className="page-header">
+        <GitOps type="qa"/>
+        {renderPagination()}
+      </div>
+    )
+  }
+
   return (
     <>
       {isLoading ? 
         renderLoadingPage() :
         <>
-          {renderPagination()}
+          {renderPageHeader()}
           {renderRecords()}
         </>
       }

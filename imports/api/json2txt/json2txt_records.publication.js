@@ -16,6 +16,7 @@ Meteor.publish('paginatedJson2txtRecords', async function (offset, limit) {
     let files
     try {
         files = await fs.readdir(dataPath)
+        files = files.filter(f => f !== '.git')
     } catch (e) {
         console.error("Failed to read directory!")
     }

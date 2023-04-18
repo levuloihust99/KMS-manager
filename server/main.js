@@ -7,6 +7,7 @@ import '/imports/api/corpus/corpus_records.publication.js'
 import '/imports/api/json2txt/json2txt_records.method.js'
 import '/imports/api/json2txt/json2txt_records.publication.js'
 import '/imports/api/pages.publication.js'
+import '/imports/api/git/git.method.js'
 
 Meteor.startup(async () => {
 

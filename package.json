@@ -5,13 +5,13 @@
     "start": "meteor run",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
-    "visualize": "meteor --production --extra-packages bundle-visualizer",
-    "postinstall": "./postinstall.sh"
+    "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
     "@babel/runtime": "^7.20.7",
     "dotenv": "^16.0.3",
     "meteor-node-stubs": "^1.2.5",
+    "nodegit": "^0.27.0",
     "prop-types": "^15.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -21,6 +21,7 @@
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.4",
     "simpl-schema": "^3.4.1",
+    "simple-git": "^3.17.0",
     "uuid": "^9.0.0",
     "winston": "^3.8.2"
   },
