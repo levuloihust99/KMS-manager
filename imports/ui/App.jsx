@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { QAApp } from './QAApp'
 import { CorpusApp } from './CorpusApp'
 import { Pages } from '../db/models'
+import { Json2txtApp } from './Json2txtApp'
 
 export const App = () => {
   const { isLoading, pages } = useTracker(() => {
@@ -35,11 +36,16 @@ export const App = () => {
       if (page._id == 'corpus-page') return true
       return false
     }).includes(true)
+    const shouldRenderJson2txt = pages.map((page) => {
+      if (page._id == 'json2txt-page') return true
+      return false
+    }).includes(true)
     return (
       <BrowserRouter>
         <Routes>
           {shouldRenderQA && <Route path="qa" element={<QAApp />} />}
           {shouldRenderCorpus && <Route path="corpus" element={<CorpusApp />} />}
+          {shouldRenderJson2txt && <Route path="json2txt" element={<Json2txtApp />} />}
         </Routes>
       </BrowserRouter>
     )

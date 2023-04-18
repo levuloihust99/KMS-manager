@@ -41,8 +41,8 @@ Meteor.publish('paginatedCorpusRecords', async function (offset, limit) {
     })
     observer.addListener('add', (record) => {
         console.log(`Observed a 'add-corpus' on subscription ${subscriptionId}`)
-        record.meta = JSON.stringify(record.meta, null, 4)
-        this.added('corpusRecords', record.article_id, record)
+        const meta = JSON.stringify(record.meta, null, 4)
+        this.added('corpusRecords', record.article_id, Object.assign({}, record, { meta }))
     })
 
     // clean the observer

@@ -4,6 +4,8 @@ import '/imports/api/qa/qa_records.method.js'
 import '/imports/api/qa/qa_records.publication.js'
 import '/imports/api/corpus/corpus_records.method.js'
 import '/imports/api/corpus/corpus_records.publication.js'
+import '/imports/api/json2txt/json2txt_records.method.js'
+import '/imports/api/json2txt/json2txt_records.publication.js'
 import '/imports/api/pages.publication.js'
 
 Meteor.startup(async () => {
