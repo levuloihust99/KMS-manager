@@ -14,13 +14,17 @@ body {
   align-items: flex-start;
 }
 
-div.row-main-content {
+div.row-main-content, div.added-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  flex: 1;
+  flex: 16;
   margin-right: 20px;
+}
+
+div.added-row {
+  margin-bottom: 10px;
 }
 
 div.row-main-content > textarea {
@@ -28,7 +32,11 @@ div.row-main-content > textarea {
   resize: none;
 }
 
-div.row-main-content > * {
+div.added-row > textarea {
+  resize: none;
+}
+
+div.row-main-content > *, div.added-row > * {
   font-size: 14px;
   font-weight: 400;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -43,6 +51,14 @@ div.row-main-content > * {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
+  flex: 1;
+}
+
+.horizontal-button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
 }
 

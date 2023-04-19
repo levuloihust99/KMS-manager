@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.7",
+    "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "meteor-node-stubs": "^1.2.5",
     "nodegit": "^0.27.0",

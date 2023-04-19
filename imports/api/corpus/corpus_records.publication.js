@@ -11,6 +11,7 @@ const dataPath = process.env.CORPUS_DATA
 Meteor.publish('paginatedCorpusRecords', async function (offset, limit) {
     corpusCounter.subscription += 1
     const subscriptionId = uuidv4()
+    const publishedKeys = {}
     console
         .info(`Number of paginated-corpus subscriptions: ${corpusCounter.subscription}. Subscription ID: ${subscriptionId}`)
     let files
@@ -25,6 +26,7 @@ Meteor.publish('paginatedCorpusRecords', async function (offset, limit) {
         const fileContent = await fs.readFile(path.join(dataPath, f), { encoding: 'utf-8' })
         const record = JSON.parse(fileContent)
         record.meta = JSON.stringify(record.meta, null, 4)
+        publishedKeys[record.article_id] = true
         this.added('corpusRecords', record.article_id, record)
     }
     this.ready()
@@ -32,11 +34,13 @@ Meteor.publish('paginatedCorpusRecords', async function (offset, limit) {
     // setup the observer: the most important part
     const observer = createObserver(subscriptionId)
     observer.addListener('update', (record) => {
+        if (!publishedKeys[record.article_id]) return
         console.log(`Observed an 'update-corpus' on subscription ${subscriptionId}`)
         const meta = JSON.stringify(record.meta, null, 4)
         this.changed('corpusRecords', record.article_id, Object.assign({}, record, { meta }))
     })
     observer.addListener('remove', (recordId) => {
+        if (!publishedKeys[recordId]) return
         console.log(`Observed a 'remove-corpus' on subscription ${subscriptionId}`)
         this.removed('corpusRecords', recordId)
     })

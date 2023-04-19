@@ -1,7 +1,6 @@
 import React from 'react'
 import { Meteor } from 'meteor/meteor'
 import { Button } from 'semantic-ui-react'
-import 'semantic-ui-css/semantic.min.css';
 
 import { displayError } from './utils/Errors';
 
@@ -110,8 +109,8 @@ export const Json2txtItem = (props) => {
         </span>
         <textarea
           className="no-focus"
-          rows="8"
-          style={{width: "40%", backgroundColor: rowBgColor}}
+          rows="10"
+          style={{width: "35%", backgroundColor: rowBgColor}}
           readOnly={true}
           ref={inputField}
           value={input}
@@ -120,8 +119,8 @@ export const Json2txtItem = (props) => {
         </textarea>
         <textarea
           className="no-focus"
-          rows="8"
-          style={{width: "40%", backgroundColor: rowBgColor}}
+          rows="10"
+          style={{width: "50%", backgroundColor: rowBgColor}}
           readOnly={true}
           ref={outputField}
           value={output}

@@ -1,16 +1,19 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor'
 import { useTracker } from 'meteor/react-meteor-data'
-import { Modal, Loader, Button } from "semantic-ui-react"
+import { Modal, Loader, Button, Icon } from "semantic-ui-react"
 
-import { CorpusItem } from './components/CorpusItem.jsx';
+import { getRandomString } from '../lib/random.js';
 import { CorpusRecordCount, CorpusRecords } from '../db/models.js';
+
+import { CorpusItem, InsertedCorpusItem } from './components/CorpusItem.jsx';
 import { GitOps } from './GitOps.jsx';
 
 const PAGE_SIZE = 5
 
 export const CorpusApp = () => {
   const [page, setPage] = React.useState(0)
+  const [onInsert, setOnInsert] = React.useState(false)
   const { isLoading, records, recordCount } = useTracker(() => {
     const handles = [
       Meteor.subscribe('corpusRecordCount'),
@@ -98,8 +101,20 @@ export const CorpusApp = () => {
       <div className="page-header">
         <GitOps type="corpus"/>
         {renderPagination()}
+        {!onInsert &&
+          <Button icon onClick={handleInsertRecord}><Icon name="add"/></Button>
+        }
       </div>
     )
+  }
+
+  const renderOnInsertRecord = () => {
+    const articleId = getRandomString()
+    return <InsertedCorpusItem articleId={articleId} changeInsertStatus={setOnInsert}/>
+  }
+
+  const handleInsertRecord = () => {
+    setOnInsert(true)
   }
 
   return (
@@ -108,6 +123,7 @@ export const CorpusApp = () => {
         renderLoadingPage() :
         <>
           {renderPageHeader()}
+          {onInsert && renderOnInsertRecord()}
           {renderRecords()}
         </>
       }

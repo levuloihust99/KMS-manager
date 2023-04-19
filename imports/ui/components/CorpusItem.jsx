@@ -1,7 +1,6 @@
 import React from 'react'
 import { Meteor } from 'meteor/meteor'
-import { Button } from 'semantic-ui-react'
-import 'semantic-ui-css/semantic.min.css';
+import { Button, Icon } from 'semantic-ui-react'
 
 import { displayError } from './utils/Errors';
 
@@ -73,17 +72,36 @@ export const CorpusItem = (props) => {
     setMeta(previousMeta)
   }
 
+  const handleClickRemove = () => {
+    Meteor.call('removeCorpusRecord', props.articleId, (err, response) => {
+      if (err) {
+        console.log("Failed to update the corpus record!")
+      } else {
+        console.log(`Updated corpus record ${props.articleId}`)
+      }
+    })
+  }
+
   const renderUtilityButton = () => {
     if (!onEdit) {
       return (
         <div className="button-container">
-          <Button
-            primary
-            onClick={handleClickEdit}
-            className="fix-width-button"
-          >
-            Edit
-          </Button>
+          <div className="horizontal-button-container">
+            <Button
+              icon
+              size='tiny'
+              onClick={handleClickEdit}
+            >
+              <Icon name="edit" />
+            </Button>
+            <Button
+              icon
+              size='tiny'
+              onClick={handleClickRemove}
+            >
+              <Icon name="times" />
+            </Button>
+          </div>
         </div>
       )
     } else {
@@ -153,6 +171,90 @@ export const CorpusItem = (props) => {
         </textarea>
       </div>    
       {renderUtilityButton()}
+    </div>
+  )
+}
+
+export const InsertedCorpusItem = ({ articleId, changeInsertStatus }) => {
+  const [title, setTitle] = React.useState('')
+  const [text, setText] = React.useState('')
+  const [meta, setMeta] = React.useState('')
+
+  const handleChangeTitle = (event) => {
+    setTitle(event.target.value)
+  }
+
+  const handleChangeText = (event) => {
+    setText(event.target.value)
+  }
+
+  const handleChangeMeta = (event) => {
+    setMeta(event.target.value)
+  }
+
+  const handleConfirmInsert = () => {
+    // validate meta value
+    try {
+      JSON.parse(meta)
+    } catch (e) {
+      displayError({ reason: 'Meta field is not a valid JSON' })
+      return
+    }
+    changeInsertStatus(false)
+    Meteor.call('insertCorpusRecord', articleId, { title, text, meta }, (err, response) => {
+      if (err) {
+        console.log("Failed to insert the corpus record!")
+      } else {
+        console.log(`Inserted corpus record ${articleId}`)
+      }
+    })
+  }
+
+  const handleCancelInsert = () => {
+    changeInsertStatus(false)
+  }
+
+  return (
+    <div className="row-item">
+      <div className="added-row">
+        <span
+          style={{width: "15%"}}
+        >
+          {articleId}
+        </span>
+        <textarea
+          rows="8"
+          style={{width: "15%"}}
+          value={title}
+          onChange={handleChangeTitle}
+        >
+        </textarea>
+        <textarea
+          rows="8"
+          style={{width: "35%"}}
+          value={text}
+          onChange={handleChangeText}
+        >
+        </textarea>
+        <textarea
+          rows="8"
+          style={{width: "30%"}}
+          value={meta}
+          onChange={handleChangeMeta}
+        >
+        </textarea>
+      </div>
+      <div className="button-container">
+        <Button className="fix-width-button" primary onClick={handleConfirmInsert}>Insert</Button>
+        <Button
+          className="fix-width-button"
+          negative
+          onClick={handleCancelInsert}
+          style={{ marginTop: "5px" }}
+        >
+          Cancel
+        </Button>
+      </div>
     </div>
   )
 }

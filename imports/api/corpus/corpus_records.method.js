@@ -32,13 +32,13 @@ Meteor.methods({
             article_id: recordId,
             title: record.title,
             text: record.text,
-            meta: record.meta
+            meta: JSON.parse(record.meta)
         }
         await fs.writeFile(
             fileToAdd,
             JSON.stringify(addedRecord, null, 4),
             { encoding: 'utf-8' }
         )
-        corpusEmitter.emit('add', recordId, addedRecord)
+        corpusEmitter.emit('add', addedRecord)
     }
 })

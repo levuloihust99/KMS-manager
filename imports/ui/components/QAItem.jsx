@@ -1,7 +1,6 @@
 import React from 'react'
 import { Meteor } from 'meteor/meteor'
 import { Button } from 'semantic-ui-react'
-import 'semantic-ui-css/semantic.min.css';
 
 export const QAItem = (props) => {
   const [question, setQuestion] = React.useState(props.question)
