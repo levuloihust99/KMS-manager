@@ -31,7 +31,7 @@ export const HomePage = ({ props }) => {
             Question-Anwsering Management
           </Menu.Item>
         }
-        {shouldRenderQA &&
+        {shouldRenderCorpus &&
           <Menu.Item
             name="corpus"
             onClick={handleClickCorpusItem}
@@ -39,7 +39,7 @@ export const HomePage = ({ props }) => {
             Corpus Management
           </Menu.Item>
         }
-        {shouldRenderQA &&
+        {shouldRenderJson2txt &&
           <Menu.Item
             name="json2txt"
             onClick={handleClickJson2txtItem}

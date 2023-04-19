@@ -1,5 +1,4 @@
 const characterPool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-console.log(characterPool.length)
 
 export function getRandomString (len = 16) {
     const randCharacters = []
