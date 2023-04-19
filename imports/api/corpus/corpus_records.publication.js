@@ -61,7 +61,8 @@ Meteor.publish('paginatedCorpusRecords', async function (offset, limit) {
 })
 
 Meteor.publish('corpusRecordCount', async function () {
-    const files = await fs.readdir(dataPath)
+    let files = await fs.readdir(dataPath)
+    files = files.filter(f => f !== '.git')
     this.added('corpusCount', 'number-of-record', { count: files.length })
     this.ready()
     this.onStop(() => {})

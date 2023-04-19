@@ -37,6 +37,6 @@ Meteor.methods({
             JSON.stringify(addedRecord, null, 4),
             { encoding: 'utf-8' }
         )
-        json2txtEmitter.emit('add', recordId, addedRecord)
+        json2txtEmitter.emit('add', addedRecord)
     }
 })

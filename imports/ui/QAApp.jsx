@@ -1,16 +1,19 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor'
 import { useTracker } from 'meteor/react-meteor-data'
-import { Modal, Loader, Button } from "semantic-ui-react"
+import { Modal, Loader, Button, Icon } from "semantic-ui-react"
 
-import { QAItem } from './components/QAItem.jsx';
-import { QARecordCount, QARecords } from '../db/models.js';
 import { GitOps } from './GitOps.jsx';
+import { getRandomString } from '../lib/random.js';
+
+import { QARecordCount, QARecords } from '../db/models.js';
+import { QAItem, InsertedQAItem } from './components/QAItem.jsx';
 
 const PAGE_SIZE = 5
 
 export const QAApp = () => {
   const [page, setPage] = React.useState(0)
+  const [onInsert, setOnInsert] = React.useState(false)
   const { isLoading, records, recordCount } = useTracker(() => {
     const handles = [
       Meteor.subscribe('qaRecordCount'),
@@ -97,8 +100,20 @@ export const QAApp = () => {
       <div className="page-header">
         <GitOps type="qa"/>
         {renderPagination()}
+        {!onInsert &&
+          <Button icon onClick={handleInsertRecord}><Icon name="add"/></Button>
+        }
       </div>
     )
+  }
+
+  const renderOnInsertRecord = () => {
+    const articleId = getRandomString()
+    return <InsertedQAItem articleId={articleId} changeInsertStatus={setOnInsert}/>
+  }
+
+  const handleInsertRecord = () => {
+    setOnInsert(true)
   }
 
   return (
@@ -107,6 +122,7 @@ export const QAApp = () => {
         renderLoadingPage() :
         <>
           {renderPageHeader()}
+          {onInsert && renderOnInsertRecord()}
           {renderRecords()}
         </>
       }

@@ -39,7 +39,7 @@ div.added-row > textarea {
 div.row-main-content > *, div.added-row > * {
   font-size: 14px;
   font-weight: 400;
-  font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+  font-family: "Segoe UI", "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
   padding: 10px 5px;
 }
 

@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor'
 
 import { qaEmitter } from './qa_observer'
 
-const dataPath = process.env.CORPUS_PATH
+const dataPath = process.env.QA_DATA
 
 Meteor.methods({
     async 'updateQARecord' (recordId, record) {
@@ -37,6 +37,6 @@ Meteor.methods({
             JSON.stringify(addedRecord, null, 4),
             { encoding: 'utf-8' }
         )
-        qaEmitter.emit('add', recordId, addedRecord)
+        qaEmitter.emit('add', addedRecord)
     }
 })

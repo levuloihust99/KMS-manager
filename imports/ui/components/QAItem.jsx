@@ -1,6 +1,6 @@
 import React from 'react'
 import { Meteor } from 'meteor/meteor'
-import { Button } from 'semantic-ui-react'
+import { Button, Icon } from 'semantic-ui-react'
 
 export const QAItem = (props) => {
   const [question, setQuestion] = React.useState(props.question)
@@ -51,17 +51,36 @@ export const QAItem = (props) => {
     setContext(previousContext)
   }
 
+  const handleClickRemove = () => {
+    Meteor.call('removeQARecord', props.articleId, (err, response) => {
+      if (err) {
+        console.log("Failed to remove the qa record!")
+      } else {
+        console.log(`Removed qa record ${props.articleId}`)
+      }
+    })
+  }
+
   const renderUtilityButton = () => {
     if (!onEdit) {
       return (
         <div className="button-container">
-          <Button
-            primary
-            onClick={handleClickEdit}
-            className="fix-width-button"
-          >
-            Edit
-          </Button>
+          <div className="horizontal-button-container">
+            <Button
+              icon
+              size='tiny'
+              onClick={handleClickEdit}
+            >
+              <Icon name="edit" />
+            </Button>
+            <Button
+              icon
+              size='tiny'
+              onClick={handleClickRemove}
+            >
+              <Icon name="times" />
+            </Button>
+          </div>
         </div>
       )
     } else {
@@ -120,6 +139,71 @@ export const QAItem = (props) => {
         </textarea>
       </div>    
       {renderUtilityButton()}
+    </div>
+  )
+}
+
+export const InsertedQAItem = ({ articleId, changeInsertStatus }) => {
+  const [question, setQuestion] = React.useState('')
+  const [context, setContext] = React.useState('')
+
+  const handleChangeQuestion = (event) => {
+    setQuestion(event.target.value)
+  }
+
+  const handleChangeContext = (event) => {
+    setContext(event.target.value)
+  }
+
+  const handleConfirmInsert = () => {
+    changeInsertStatus(false)
+    Meteor.call('insertQARecord', articleId, { question, context }, (err, response) => {
+      if (err) {
+        console.log("Failed to insert the qa record!")
+      } else {
+        console.log(`Inserted qa record ${articleId}`)
+      }
+    })
+  }
+
+  const handleCancelInsert = () => {
+    changeInsertStatus(false)
+  }
+
+  return (
+    <div className="row-item">
+      <div className="added-row">
+        <span
+          style={{width: "20%"}}
+        >
+          {articleId}
+        </span>
+        <textarea
+          rows="8"
+          style={{width: "20%"}}
+          value={question}
+          onChange={handleChangeQuestion}
+        >
+        </textarea>
+        <textarea
+          rows="8"
+          style={{width: "55%"}}
+          value={context}
+          onChange={handleChangeContext}
+        >
+        </textarea>
+      </div>
+      <div className="button-container">
+        <Button className="fix-width-button" primary onClick={handleConfirmInsert}>Insert</Button>
+        <Button
+          className="fix-width-button"
+          negative
+          onClick={handleCancelInsert}
+          style={{ marginTop: "5px" }}
+        >
+          Cancel
+        </Button>
+      </div>
     </div>
   )
 }

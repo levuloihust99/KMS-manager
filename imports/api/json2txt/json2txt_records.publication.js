@@ -46,7 +46,7 @@ Meteor.publish('paginatedJson2txtRecords', async function (offset, limit) {
     })
     observer.addListener('add', (record) => {
         console.log(`Observed a 'add-json2txt' on subscription ${subscriptionId}`)
-        const input = JSON.stringify(record.meta, null, 4)
+        const input = JSON.stringify(record.input, null, 4)
         this.added('json2txtRecords', record.article_id, Object.assign({}, record, { input }))
     })
 
@@ -61,7 +61,8 @@ Meteor.publish('paginatedJson2txtRecords', async function (offset, limit) {
 })
 
 Meteor.publish('json2txtRecordCount', async function () {
-    const files = await fs.readdir(dataPath)
+    let files = await fs.readdir(dataPath)
+    files = files.filter(f => f !== '.git')
     this.added('json2txtRecordCount', 'number-of-record', { count: files.length })
     this.ready()
     this.onStop(() => {})
