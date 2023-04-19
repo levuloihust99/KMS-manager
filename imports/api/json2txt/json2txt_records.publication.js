@@ -1,10 +1,11 @@
 import fs from 'fs/promises'
 import path from 'path'
+import { v4 as uuidv4 } from 'uuid'
 import { Meteor } from 'meteor/meteor'
 
 import { json2txtCounter } from './json2txt_observer'
 import { createObserver, removeObserver } from './json2txt_observer'
-import { v4 as uuidv4 } from 'uuid'
+import { sortFiles } from '../../lib/utils'
 
 const dataPath = process.env.JSON2TXT_DATA
 
@@ -21,9 +22,11 @@ Meteor.publish('paginatedJson2txtRecords', async function (offset, limit) {
     } catch (e) {
         console.error("Failed to read directory!")
     }
+    files = files.map(f => path.join(dataPath, f))
+    files = await sortFiles(files)
     files = files.slice(offset, offset + limit)
     for (const f of files) {
-        const fileContent = await fs.readFile(path.join(dataPath, f), { encoding: 'utf-8' })
+        const fileContent = await fs.readFile(f, { encoding: 'utf-8' })
         const record = JSON.parse(fileContent)
         record.input = JSON.stringify(record.input, null, 4)
         publishedKeys[record.article_id] = true
@@ -42,11 +45,13 @@ Meteor.publish('paginatedJson2txtRecords', async function (offset, limit) {
     observer.addListener('remove', (recordId) => {
         if (!publishedKeys[recordId]) return
         console.log(`Observed a 'remove-json2txt' on subscription ${subscriptionId}`)
+        delete publishedKeys[recordId]
         this.removed('json2txtRecords', recordId)
     })
     observer.addListener('add', (record) => {
         console.log(`Observed a 'add-json2txt' on subscription ${subscriptionId}`)
         const input = JSON.stringify(record.input, null, 4)
+        publishedKeys[record.article_id] = true
         this.added('json2txtRecords', record.article_id, Object.assign({}, record, { input }))
     })
 

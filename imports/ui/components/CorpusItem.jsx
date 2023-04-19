@@ -141,7 +141,7 @@ export const CorpusItem = (props) => {
         </span>
         <textarea
           className="no-focus"
-          rows="5"
+          rows="10"
           style={{width: "15%", backgroundColor: rowBgColor}}
           readOnly={true}
           ref={titleField}
@@ -151,7 +151,7 @@ export const CorpusItem = (props) => {
         </textarea>
         <textarea
           className="no-focus"
-          rows="5"
+          rows="10"
           style={{width: "35%", backgroundColor: rowBgColor}}
           readOnly={true}
           ref={textField}
@@ -161,7 +161,7 @@ export const CorpusItem = (props) => {
         </textarea>
         <textarea
           className="no-focus"
-          rows="5"
+          rows="10"
           style={{width: "30%", backgroundColor: rowBgColor}}
           readOnly={true}
           ref={metaField}
