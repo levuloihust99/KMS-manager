@@ -34,7 +34,7 @@ export const QAItem = (props) => {
     setOnEdit(false)
     setPreviousQuestion(question)
     setPreviousContext(context)
-    Meteor.call('updateRecord', props.articleId, { question, context }, (err, response) => {
+    Meteor.call('updateQARecord', props.articleId, { question, context }, (err, response) => {
       if (err) {
         console.log("Failed to update the qa record!")
       } else {
@@ -113,14 +113,14 @@ export const QAItem = (props) => {
     <div className="row-item">
       <div className="row-main-content" style={{backgroundColor: rowBgColor}}>
         <span
-          style={{width: "20%"}}
+          style={{width: "15%"}}
         >
           {props.articleId}
         </span>
         <textarea
           className="no-focus"
           rows="5"
-          style={{width: "20%", backgroundColor: rowBgColor}}
+          style={{width: "25%", backgroundColor: rowBgColor}}
           readOnly={true}
           ref={questionField}
           value={question}
