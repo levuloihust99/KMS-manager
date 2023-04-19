@@ -6,8 +6,8 @@ import { Modal, Loader, Button, Icon } from "semantic-ui-react"
 import { getRandomString } from '../lib/random.js';
 import { CorpusRecordCount, CorpusRecords } from '../db/models.js';
 
-import { CorpusItem, InsertedCorpusItem } from './components/CorpusItem.jsx';
 import { GitOps } from './GitOps.jsx';
+import { CorpusItem, InsertedCorpusItem } from './components/CorpusItem.jsx';
 
 const PAGE_SIZE = 5
 

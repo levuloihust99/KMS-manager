@@ -75,9 +75,9 @@ export const CorpusItem = (props) => {
   const handleClickRemove = () => {
     Meteor.call('removeCorpusRecord', props.articleId, (err, response) => {
       if (err) {
-        console.log("Failed to update the corpus record!")
+        console.log("Failed to remove the corpus record!")
       } else {
-        console.log(`Updated corpus record ${props.articleId}`)
+        console.log(`Removed corpus record ${props.articleId}`)
       }
     })
   }

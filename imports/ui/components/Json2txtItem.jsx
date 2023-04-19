@@ -1,6 +1,6 @@
 import React from 'react'
 import { Meteor } from 'meteor/meteor'
-import { Button } from 'semantic-ui-react'
+import { Button, Icon } from 'semantic-ui-react'
 
 import { displayError } from './utils/Errors';
 
@@ -60,17 +60,36 @@ export const Json2txtItem = (props) => {
     setOutput(previousOutput)
   }
 
+  const handleClickRemove = () => {
+    Meteor.call('removeJson2txtRecord', props.articleId, (err, response) => {
+      if (err) {
+        console.log("Failed to remove the json2txt record!")
+      } else {
+        console.log(`Removed json2txt record ${props.articleId}`)
+      }
+    })
+  }
+ 
   const renderUtilityButton = () => {
     if (!onEdit) {
       return (
         <div className="button-container">
-          <Button
-            primary
-            onClick={handleClickEdit}
-            className="fix-width-button"
-          >
-            Edit
-          </Button>
+          <div className="horizontal-button-container">
+            <Button
+              icon
+              size='tiny'
+              onClick={handleClickEdit}
+            >
+              <Icon name="edit" />
+            </Button>
+            <Button
+              icon
+              size='tiny'
+              onClick={handleClickRemove}
+            >
+              <Icon name="times" />
+            </Button>
+          </div>
         </div>
       )
     } else {
@@ -129,6 +148,78 @@ export const Json2txtItem = (props) => {
         </textarea>
       </div>    
       {renderUtilityButton()}
+    </div>
+  )
+}
+
+export const InsertedJson2txtItem = ({ articleId, changeInsertStatus }) => {
+  const [input, setInput] = React.useState('')
+  const [output, setOutput] = React.useState('')
+
+  const handleChangeInput = (event) => {
+    setInput(event.target.value)
+  }
+
+  const handleChangeOutput = (event) => {
+    setOutput(event.target.value)
+  }
+
+  const handleConfirmInsert = () => {
+    // validate meta value
+    try {
+      JSON.parse(input)
+    } catch (e) {
+      displayError({ reason: 'Input field is not a valid JSON' })
+      return
+    }
+    changeInsertStatus(false)
+    Meteor.call('insertJson2txtRecord', articleId, { input, output }, (err, response) => {
+      if (err) {
+        console.log("Failed to insert the json2txt record!")
+      } else {
+        console.log(`Inserted json2txt record ${articleId}`)
+      }
+    })
+  }
+
+  const handleCancelInsert = () => {
+    changeInsertStatus(false)
+  }
+
+  return (
+    <div className="row-item">
+      <div className="added-row">
+        <span
+          style={{width: "15%"}}
+        >
+          {articleId}
+        </span>
+        <textarea
+          rows="8"
+          style={{width: "35%"}}
+          value={input}
+          onChange={handleChangeInput}
+        >
+        </textarea>
+        <textarea
+          rows="8"
+          style={{width: "50%"}}
+          value={output}
+          onChange={handleChangeOutput}
+        >
+        </textarea>
+      </div>
+      <div className="button-container">
+        <Button className="fix-width-button" primary onClick={handleConfirmInsert}>Insert</Button>
+        <Button
+          className="fix-width-button"
+          negative
+          onClick={handleCancelInsert}
+          style={{ marginTop: "5px" }}
+        >
+          Cancel
+        </Button>
+      </div>
     </div>
   )
 }

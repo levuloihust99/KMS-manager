@@ -11,6 +11,7 @@ const dataPath = process.env.QA_DATA
 Meteor.publish('paginatedQARecords', async function (offset, limit) {
     qaCounter.subscription += 1
     const subscriptionId = uuidv4()
+    const publishedKeys = {}
     console
         .info(`Number of paginated-qa subscriptions: ${qaCounter.subscription}. Subscription ID: ${subscriptionId}`)
     let files
@@ -24,6 +25,7 @@ Meteor.publish('paginatedQARecords', async function (offset, limit) {
     for (const f of files) {
         const fileContent = await fs.readFile(path.join(dataPath, f), { encoding: 'utf-8' })
         const record = JSON.parse(fileContent)
+        publishedKeys[record.article_id] = true
         this.added('qaRecords', record.article_id, record)
     }
     this.ready()
@@ -31,10 +33,12 @@ Meteor.publish('paginatedQARecords', async function (offset, limit) {
     // setup the observer: the most important part
     const observer = createObserver(subscriptionId)
     observer.addListener('update', (record) => {
+        if (!publishedKeys[record.article_id]) return
         console.log(`Observed an 'update-qa' on subscription ${subscriptionId}`)
         this.changed('qaRecords', record.article_id, record)
     })
     observer.addListener('remove', (recordId) => {
+        if (!publishedKeys[recordId]) return
         console.log(`Observed a 'remove-qa' on subscription ${subscriptionId}`)
         this.removed('qaRecords', recordId)
     })

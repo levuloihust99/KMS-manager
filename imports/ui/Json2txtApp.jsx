@@ -1,16 +1,19 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor'
 import { useTracker } from 'meteor/react-meteor-data'
-import { Modal, Loader, Button } from "semantic-ui-react"
+import { Modal, Loader, Button, Icon } from "semantic-ui-react"
 
-import { Json2txtItem } from './components/Json2txtItem.jsx';
+import { getRandomString } from '../lib/random.js';
 import { Json2txtRecordCount, Json2txtRecords } from '../db/models.js';
+
 import { GitOps } from './GitOps.jsx';
+import { Json2txtItem, InsertedJson2txtItem } from './components/Json2txtItem.jsx';
 
 const PAGE_SIZE = 5
 
 export const Json2txtApp = () => {
   const [page, setPage] = React.useState(0)
+  const [onInsert, setOnInsert] = React.useState(false)
   const { isLoading, records, recordCount } = useTracker(() => {
     const handles = [
       Meteor.subscribe('json2txtRecordCount'),
@@ -92,11 +95,23 @@ export const Json2txtApp = () => {
     )
   }
 
+  const renderOnInsertRecord = () => {
+    const articleId = getRandomString()
+    return <InsertedJson2txtItem articleId={articleId} changeInsertStatus={setOnInsert}/>
+  }
+
+  const handleInsertRecord = () => {
+    setOnInsert(true)
+  }
+
   const renderPageHeader = () => {
     return (
       <div className="page-header">
         <GitOps type="json2txt"/>
         {renderPagination()}
+        {!onInsert &&
+          <Button icon onClick={handleInsertRecord}><Icon name="add"/></Button>
+        }
       </div>
     )
   }
@@ -107,6 +122,7 @@ export const Json2txtApp = () => {
         renderLoadingPage() :
         <>
           {renderPageHeader()}
+          {onInsert && renderOnInsertRecord()}
           {renderRecords()}
         </>
       }
