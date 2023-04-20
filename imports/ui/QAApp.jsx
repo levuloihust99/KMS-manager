@@ -2,6 +2,7 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor'
 import { useTracker } from 'meteor/react-meteor-data'
 import { Modal, Loader, Button, Icon } from "semantic-ui-react"
+import { useParams, useNavigate, Navigate } from 'react-router-dom'
 
 import { GitOps } from './GitOps.jsx';
 import { getRandomString } from '../lib/random.js';
@@ -12,7 +13,11 @@ import { QAItem, InsertedQAItem } from './components/QAItem.jsx';
 const PAGE_SIZE = 5
 
 export const QAApp = () => {
-  const [page, setPage] = React.useState(0)
+  const navigate = useNavigate()
+  const { pageId } = useParams()
+  const page = pageId - 1
+  if (Number.isNaN(page)) return <Navigate to="/404" />
+
   const [onInsert, setOnInsert] = React.useState(false)
   const { isLoading, records, recordCount } = useTracker(() => {
     const handles = [
@@ -59,7 +64,7 @@ export const QAApp = () => {
         pageButtons.push((
           <Button
             key={`page-button-${i}`}
-            onClick={() => setPage(i)}
+            onClick={() => navigate(`/qa/${i + 1}`)}
           >
             {i + 1}
           </Button>
@@ -68,7 +73,7 @@ export const QAApp = () => {
     }
     if (minPage > 0) {
       const beginButton = (
-        <Button key={`page-button-begin`} onClick={() => setPage(0)}>begin</Button>
+        <Button key={`page-button-begin`} onClick={() => navigate('/qa/1')}>begin</Button>
       )
       const dots = (
         <span key="dot-after-begin" style={{marginLeft: "10px", marginRight: "10px"}}>
@@ -79,7 +84,7 @@ export const QAApp = () => {
     }
     if (maxPage < numPages - 1) {
       const endButton = (
-        <Button key={`page-button-end`} onClick={() => setPage(numPages - 1)}>end</Button>
+        <Button key={`page-button-end`} onClick={() => navigate(numPages)}>end</Button>
       )
       const dots = (
         <span key="dot-before-end" style={{marginLeft: "10px", marginRight: "10px"}}>
@@ -98,7 +103,7 @@ export const QAApp = () => {
   const renderPageHeader = () => {
     return (
       <div className="page-header">
-        <GitOps type="qa"/>
+        <GitOps managerType="qa"/>
         {renderPagination()}
         {!onInsert &&
           <Button icon onClick={handleInsertRecord}><Icon name="add"/></Button>
@@ -116,16 +121,18 @@ export const QAApp = () => {
     setOnInsert(true)
   }
 
-  return (
-    <>
-      {isLoading ? 
-        renderLoadingPage() :
-        <>
-          {renderPageHeader()}
-          {onInsert && renderOnInsertRecord()}
-          {renderRecords()}
-        </>
-      }
-    </>
-  )
+  const render = () => {
+    if (isLoading) return renderLoadingPage()
+    const numPages = Math.floor((recordCount.count + PAGE_SIZE - 1) / PAGE_SIZE)
+    if (page > numPages) return <Navigate to="/404" />
+    return (
+      <>
+        {renderPageHeader()}
+        {onInsert && renderOnInsertRecord()}
+        {renderRecords()}
+      </>
+    )
+  }
+
+  return render()
 }

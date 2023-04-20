@@ -174,13 +174,13 @@ export const InsertedQAItem = ({ articleId, changeInsertStatus }) => {
     <div className="row-item">
       <div className="added-row">
         <span
-          style={{width: "20%"}}
+          style={{width: "15%"}}
         >
           {articleId}
         </span>
         <textarea
           rows="8"
-          style={{width: "20%"}}
+          style={{width: "25%"}}
           value={question}
           onChange={handleChangeQuestion}
         >

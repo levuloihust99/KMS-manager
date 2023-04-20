@@ -2,13 +2,13 @@ import simpleGit from 'simple-git'
 import { Meteor } from 'meteor/meteor'
 
 Meteor.methods({
-    async 'gitAdd' (type) {
+    async 'gitAdd' (managerType) {
         let path
-        if (type === 'qa') {
+        if (managerType === 'qa') {
             path = process.env.QA_DATA
-        } else if (type === 'corpus') {
+        } else if (managerType === 'corpus') {
             path = process.env.CORPUS_DATA
-        } else if (type === 'json2txt') {
+        } else if (managerType === 'json2txt') {
             path = process.env.JSON2TXT_DATA
         }
         const git = simpleGit(path)
@@ -20,13 +20,13 @@ Meteor.methods({
         return "Successfully added changes to the stage"
     },
 
-    async 'gitCommit' (type, msg = "data versioning") {
+    async 'gitCommit' (managerType, msg = "data versioning") {
         let path
-        if (type === 'qa') {
+        if (managerType === 'qa') {
             path = process.env.QA_DATA
-        } else if (type === 'corpus') {
+        } else if (managerType === 'corpus') {
             path = process.env.CORPUS_DATA
-        } else if (type === 'json2txt') {
+        } else if (managerType === 'json2txt') {
             path = process.env.JSON2TXT_DATA
         }
         const git = simpleGit(path)

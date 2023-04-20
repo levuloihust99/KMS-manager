@@ -2,6 +2,7 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor'
 import { useTracker } from 'meteor/react-meteor-data'
 import { Modal, Loader, Button, Icon } from "semantic-ui-react"
+import { useParams, useNavigate, Navigate } from 'react-router-dom'
 
 import { getRandomString } from '../lib/random.js';
 import { Json2txtRecordCount, Json2txtRecords } from '../db/models.js';
@@ -12,7 +13,11 @@ import { Json2txtItem, InsertedJson2txtItem } from './components/Json2txtItem.js
 const PAGE_SIZE = 5
 
 export const Json2txtApp = () => {
-  const [page, setPage] = React.useState(0)
+  const navigate = useNavigate()
+  const { pageId } = useParams()
+  const page = pageId - 1
+  if (Number.isNaN(page)) return <Navigate to="/404" />
+
   const [onInsert, setOnInsert] = React.useState(false)
   const { isLoading, records, recordCount } = useTracker(() => {
     const handles = [
@@ -59,7 +64,7 @@ export const Json2txtApp = () => {
         pageButtons.push((
           <Button
             key={`page-button-${i}`}
-            onClick={() => setPage(i)}
+            onClick={() => navigate(`/json2txt/${i + 1}`)}
           >
             {i + 1}
           </Button>
@@ -68,7 +73,7 @@ export const Json2txtApp = () => {
     }
     if (minPage > 0) {
       const beginButton = (
-        <Button key={`page-button-begin`} onClick={() => setPage(0)}>begin</Button>
+        <Button key={`page-button-begin`} onClick={() => navigate("/json2txt/1")}>begin</Button>
       )
       const dots = (
         <span key="dot-after-begin" style={{marginLeft: "10px", marginRight: "10px"}}>
@@ -79,7 +84,7 @@ export const Json2txtApp = () => {
     }
     if (maxPage < numPages - 1) {
       const endButton = (
-        <Button key={`page-button-end`} onClick={() => setPage(numPages - 1)}>end</Button>
+        <Button key={`page-button-end`} onClick={() => navigate(`/json2txt/${numPages}`)}>end</Button>
       )
       const dots = (
         <span key="dot-before-end" style={{marginLeft: "10px", marginRight: "10px"}}>
@@ -107,7 +112,7 @@ export const Json2txtApp = () => {
   const renderPageHeader = () => {
     return (
       <div className="page-header">
-        <GitOps type="json2txt"/>
+        <GitOps managerType="json2txt"/>
         {renderPagination()}
         {!onInsert &&
           <Button icon onClick={handleInsertRecord}><Icon name="add"/></Button>
@@ -116,16 +121,18 @@ export const Json2txtApp = () => {
     )
   }
 
-  return (
-    <>
-      {isLoading ? 
-        renderLoadingPage() :
-        <>
-          {renderPageHeader()}
-          {onInsert && renderOnInsertRecord()}
-          {renderRecords()}
-        </>
-      }
-    </>
-  )
+  const render = () => {
+    if (isLoading) return renderLoadingPage()
+    const numPages = Math.floor((recordCount.count + PAGE_SIZE - 1) / PAGE_SIZE)
+    if (page > numPages) return <Navigate to="/404" />
+    return (
+      <>
+        {renderPageHeader()}
+        {onInsert && renderOnInsertRecord()}
+        {renderRecords()}
+      </>
+    )
+  }
+
+  return render()
 }

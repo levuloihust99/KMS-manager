@@ -26,7 +26,7 @@ Meteor.publish('paginatedQARecords', async function (offset, limit) {
     files = await sortFiles(files)
     files = files.slice(offset, offset + limit)
     for (const f of files) {
-        const fileContent = await fs.readFile(path.join(dataPath, f), { encoding: 'utf-8' })
+        const fileContent = await fs.readFile(f, { encoding: 'utf-8' })
         const record = JSON.parse(fileContent)
         publishedKeys[record.article_id] = true
         this.added('qaRecords', record.article_id, record)
