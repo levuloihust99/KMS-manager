@@ -13,7 +13,9 @@ Meteor.methods({
         }
         const git = simpleGit(path)
         const diff = await git.diff()
-        if (!diff) {
+        const status = await git.status()
+        const notAdded = status.not_added
+        if (!diff && notAdded.length === 0) {
             return "Nothing to add"
         }
         await git.add('-A') // stage all changes
