@@ -129,7 +129,7 @@ export const CorpusItem = (props) => {
     setTitle(props.title)
     setText(props.text)
     setMeta(props.meta)
-  }, [props.question, props.context, props.meta])
+  }, [props.title, props.text, props.meta])
 
   return (
     <div className="row-item">
