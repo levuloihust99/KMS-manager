@@ -84,7 +84,7 @@ export const QAApp = () => {
     }
     if (maxPage < numPages - 1) {
       const endButton = (
-        <Button key={`page-button-end`} onClick={() => navigate(numPages)}>end</Button>
+        <Button key={`page-button-end`} onClick={() => navigate(`/qa/${numPages}`)}>end</Button>
       )
       const dots = (
         <span key="dot-before-end" style={{marginLeft: "10px", marginRight: "10px"}}>
